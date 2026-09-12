@@ -1,498 +1,297 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>interactive-documentation-toolkit-v4</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fearless Workplace Documentation Toolkit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
-:root,
-[data-theme="light"] {
-  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-  --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
-  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
-  --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
-  --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.25rem;
-  --radius-full: 9999px;
-  --color-bg: #D7EAEF;
-  --color-surface: #fcfbf8;
-  --color-surface-2: #f1eee7;
-  --color-surface-offset: #e4f1f5;
-  --color-border: rgba(40, 37, 29, 0.12);
-  --color-text: #28251d;
-  --color-text-muted: #655f56;
-  --color-text-faint: #9d978d;
-  --color-primary: #2F6E83;
-  --color-primary-hover: #1f6070;
-  --color-primary-highlight: rgba(45, 116, 134, 0.22);
-  --color-accent: #8B2635;
-  --color-accent-highlight: rgba(162, 51, 74, 0.08);
-  --color-success: #47752f;
-  --color-warning: #a05d16;
-  --color-error: #9b2f53;
-  --shadow-sm: 0 1px 2px rgba(32, 26, 18, 0.06);
-  --shadow-md: 0 12px 30px rgba(32, 26, 18, 0.08);
-  --content-default: 1180px;
-  --font-display: 'Instrument Serif', Georgia, serif;
-  --font-body: 'Work Sans', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
-  --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+:root,[data-theme="light"]{
+  --bg:#D7EAEF;--surface:#fcfbf8;--surface2:#f1eee7;--offset:#e4f1f5;--border:rgba(40,37,29,.13);
+  --text:#28251d;--muted:#655f56;--faint:#8a8378;--primary:#2F6E83;--primaryHover:#1f6070;--primaryTint:rgba(47,110,131,.12);
+  --accent:#8B2635;--accentTint:rgba(139,38,53,.08);--success:#47752f;--warning:#a05d16;
+  --shadow:0 12px 30px rgba(32,26,18,.08);--radius:1.1rem;--radiusSm:.72rem;
+  --display:'Instrument Serif',Georgia,serif;--body:'Work Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
 }
-[data-theme="dark"] {
-  --color-bg: #171614;
-  --color-surface: #1d1b19;
-  --color-surface-2: #262320;
-  --color-surface-offset: #2d2925;
-  --color-border: rgba(241, 237, 229, 0.12);
-  --color-text: #ebe7de;
-  --color-text-muted: #b7b0a3;
-  --color-text-faint: #837d72;
-  --color-primary: #6db0c0;
-  --color-primary-hover: #8fc8d5;
-  --color-primary-highlight: rgba(109, 176, 192, 0.14);
-  --color-accent: #d06a7d;
-  --color-accent-highlight: rgba(208, 106, 125, 0.12);
-  --color-success: #88b96f;
-  --color-warning: #d49c5f;
-  --color-error: #de82a4;
+[data-theme="dark"]{
+  --bg:#171614;--surface:#1d1b19;--surface2:#262320;--offset:#2d2925;--border:rgba(241,237,229,.13);
+  --text:#ebe7de;--muted:#b7b0a3;--faint:#8f887d;--primary:#6db0c0;--primaryHover:#8fc8d5;--primaryTint:rgba(109,176,192,.14);
+  --accent:#d06a7d;--accentTint:rgba(208,106,125,.12);--success:#88b96f;--warning:#d49c5f;
 }
-* ,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: none; text-size-adjust: none; scroll-behavior: smooth; }
-body {
-  min-height: 100dvh;
-  line-height: 1.65;
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  color: var(--color-text);
-  background: radial-gradient(circle at top left, var(--color-primary-highlight), transparent 34%), var(--color-bg);
-}
-img, svg { display: block; max-width: 100%; }
-button, input, textarea, select { font: inherit; color: inherit; }
-button { cursor: pointer; border: none; background: none; }
-a { color: inherit; text-decoration: none; }
-textarea { resize: vertical; }
-:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-}
-.skip-link { position: absolute; left: var(--space-4); top: -100px; background: var(--color-primary); color: #fff; padding: var(--space-3) var(--space-4); border-radius: var(--radius-full); z-index: 1000; }
-.skip-link:focus { top: var(--space-4); }
-.app-shell { max-width: var(--content-default); margin: 0 auto; padding: var(--space-4); }
-.topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding-block: var(--space-4) var(--space-6); }
-.brand-lockup { display: flex; align-items: center; gap: var(--space-3); }
-.logo-mark {
-  width: 3.6rem; height: 3.6rem; border-radius: var(--radius-xl); background: linear-gradient(180deg, var(--color-accent), var(--color-primary));
-  position: relative; box-shadow: var(--shadow-sm); overflow: hidden;
-}
-.logo-mark::before,
-.logo-mark::after { content: ''; position: absolute; inset: 14% 34% 14% 34%; border-radius: 999px; background: rgba(255,255,255,0.92); transform-origin: center; }
-.logo-mark::before { transform: rotate(34deg) translateX(-10px); }
-.logo-mark::after { transform: rotate(34deg) translateX(10px); }
-.brand-text small { display: block; font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-1); }
-.brand-text strong { display: block; font-size: var(--text-base); font-weight: 600; }
-.topbar-actions { display: flex; align-items: center; gap: var(--space-2); }
-.icon-btn, .ghost-btn, .btn, .nav-chip, .small-btn { transition: background var(--transition-interactive), color var(--transition-interactive), border-color var(--transition-interactive), transform var(--transition-interactive), box-shadow var(--transition-interactive); }
-.icon-btn { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); }
-.hero { display: grid; grid-template-columns: 1.25fr 0.9fr; gap: var(--space-6); align-items: stretch; }
-.panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); }
-.hero-copy { padding: clamp(var(--space-6), 4vw, var(--space-10)); }
-.eyebrow { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); border-radius: var(--radius-full); background: var(--color-primary-highlight); color: var(--color-primary); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
-h1,h2,h3 { font-family: var(--font-display); line-height: 1.05; color: var(--color-text); }
-h1 { font-size: clamp(2.6rem, 1.8rem + 4vw, 5rem); margin-top: var(--space-4); max-width: 11ch; }
-h2 { font-size: clamp(2rem, 1.5rem + 1.8vw, 3rem); }
-.hero-copy p, .module-intro, .lead, .card p, .card li, .notice p { color: var(--color-text-muted); }
-.hero-copy p { margin-top: var(--space-4); max-width: 62ch; }
-.hero-actions, .utility-row, .module-tools { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-.hero-actions { margin-top: var(--space-6); }
-.btn,.ghost-btn { min-height: 48px; padding: var(--space-3) var(--space-4); border-radius: var(--radius-full); font-size: var(--text-sm); font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); }
-.btn { background: var(--color-primary); color: #fff; box-shadow: var(--shadow-sm); }
-.btn:hover { background: var(--color-primary-hover); transform: translateY(-1px); }
-.ghost-btn, .small-btn { background: var(--color-surface-2); border: 1px solid var(--color-border); }
-.ghost-btn:hover, .small-btn:hover, .icon-btn:hover { background: var(--color-surface-offset); }
-.small-btn { min-height: 40px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 600; }
-.hero-side { padding: var(--space-6); display: grid; gap: var(--space-4); align-content: start; }
-.stat-card { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--color-surface-2); border: 1px solid var(--color-border); }
-.stat-card strong { display: block; font-size: var(--text-xl); color: var(--color-accent); }
-.stat-card span { color: var(--color-text-muted); font-size: var(--text-sm); }
-.section-shell { display: grid; grid-template-columns: 300px 1fr; gap: var(--space-6); margin-top: var(--space-8); }
-.sidebar { position: sticky; top: var(--space-4); align-self: start; padding: var(--space-5); }
-.sidebar h2 { font-size: var(--text-xl); margin-bottom: var(--space-3); }
-.sidebar p { color: var(--color-text-muted); font-size: var(--text-sm); margin-bottom: var(--space-4); }
-.nav-stack { display: grid; gap: var(--space-2); }
-.nav-chip { width: 100%; text-align: left; padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: transparent; }
-.nav-chip span { display: block; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-faint); }
-.nav-chip strong { display: block; font-size: var(--text-base); font-weight: 600; color: var(--color-text); }
-.nav-chip.active { background: var(--color-primary-highlight); border-color: color-mix(in srgb, var(--color-primary) 32%, transparent); }
-.content-stack { display: grid; gap: var(--space-5); align-content: start; }
-.module { display: none; padding: clamp(var(--space-5), 3vw, var(--space-8)); content-visibility: auto; }
-.module.active { display: block; }
-.module-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-5); }
-.module-kicker { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--space-2); }
-.grid-2,.grid-3 { display: grid; gap: var(--space-4); }
-.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.card { padding: var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: var(--color-surface-2); }
-.card h3 { font-size: var(--text-lg); margin-bottom: var(--space-2); }
-.card ul { padding-left: 1.2rem; }
-.card li + li { margin-top: var(--space-2); }
-.callout-row { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-4); margin-top: var(--space-4); }
-.notice { padding: var(--space-4); border-radius: var(--radius-lg); border: 1px solid var(--color-border); background: var(--color-surface-2); }
-.notice strong { color: var(--color-text); }
-.timeline-step { display: grid; grid-template-columns: 36px 1fr; gap: var(--space-3); align-items: start; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
-.timeline-step:last-child { border-bottom: none; }
-.step-num { width: 36px; height: 36px; border-radius: var(--radius-full); display: inline-flex; align-items: center; justify-content: center; background: var(--color-primary-highlight); color: var(--color-primary); font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; }
-.compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-.compare .card:first-child { background: color-mix(in srgb, var(--color-success) 10%, var(--color-surface)); }
-.compare .card:last-child { background: var(--color-accent-highlight); }
-label { display: grid; gap: var(--space-2); font-size: var(--text-sm); font-weight: 600; color: var(--color-text); }
-input[type="text"], input[type="date"], textarea { width: 100%; min-height: 48px; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface); }
-textarea { min-height: 112px; }
-.form-panel { display: grid; gap: var(--space-4); }
-.form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
-.output-box { padding: var(--space-4); border-radius: var(--radius-lg); background: var(--color-surface-offset); border: 1px dashed var(--color-border); font-size: var(--text-sm); white-space: pre-wrap; min-height: 220px; }
-.checklist { display: grid; gap: var(--space-2); }
-.check-item { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-surface-2); }
-.check-item input { margin-top: 0.25rem; }
-.scorebar { overflow: hidden; height: 0.85rem; border-radius: var(--radius-full); background: var(--color-surface-offset); margin-top: var(--space-3); }
-.scorefill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--color-warning), var(--color-primary)); transition: width var(--transition-interactive); }
-.micro-grid { display: grid; gap: var(--space-3); margin-top: var(--space-4); }
-.micro-card { padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-surface-offset); border: 1px solid var(--color-border); }
-.toast { position: fixed; right: var(--space-4); bottom: var(--space-4); padding: var(--space-3) var(--space-4); border-radius: var(--radius-full); background: var(--color-text); color: var(--color-bg); box-shadow: var(--shadow-md); opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity var(--transition-interactive), transform var(--transition-interactive); }
-.toast.show { opacity: 1; transform: translateY(0); }
-@media (max-width: 980px) { .hero, .section-shell, .callout-row { grid-template-columns: 1fr; } .sidebar { position: static; } }
-@media (max-width: 720px) { .grid-2, .grid-3, .compare, .form-row { grid-template-columns: 1fr; } .module-header, .topbar { flex-direction: column; align-items: flex-start; } }
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100dvh;background:radial-gradient(circle at top left,var(--primaryTint),transparent 33%),var(--bg);color:var(--text);font-family:var(--body);line-height:1.6;font-size:16px}button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}a{color:inherit}.app{max-width:1220px;margin:auto;padding:18px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:4px 0 18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:52px;height:52px;border-radius:15px;background:linear-gradient(150deg,var(--accent),var(--primary));position:relative;box-shadow:0 4px 15px rgba(0,0,0,.08)}.logo:before,.logo:after{content:"";position:absolute;inset:11px 22px;background:#fff;border-radius:50px;transform:rotate(35deg)}.logo:before{translate:-7px}.logo:after{translate:7px}.brand small{display:block;color:var(--primary);font:600 11px var(--mono);letter-spacing:.13em;text-transform:uppercase}.brand strong{display:block;font-size:17px}.iconBtn,.btn,.ghost,.smallBtn,.navBtn{border:1px solid var(--border);border-radius:999px;background:var(--surface);transition:.18s ease}.iconBtn{width:44px;height:44px;display:grid;place-items:center}.btn,.ghost,.smallBtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:650}.btn,.ghost{min-height:46px;padding:10px 16px}.btn{background:var(--primary);color:#fff;border-color:transparent}.btn:hover{background:var(--primaryHover);transform:translateY(-1px)}.ghost{background:var(--surface2)}.smallBtn{min-height:38px;padding:7px 12px;background:var(--surface2);font-size:13px}.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}.hero{display:grid;grid-template-columns:1.25fr .85fr;gap:22px}.heroCopy{padding:clamp(26px,4vw,48px)}.eyebrow{display:inline-flex;background:var(--primaryTint);color:var(--primary);font:700 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:7px 10px;border-radius:999px}.hero h1,h2,h3{font-family:var(--display);line-height:1.03}.hero h1{font-size:clamp(2.7rem,6vw,5rem);max-width:12ch;margin:16px 0}.hero p,.intro,.card p,.card li,.notice p,.hint{color:var(--muted)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.heroSide{padding:24px;display:grid;gap:13px;align-content:start}.stat{padding:16px;border-radius:var(--radiusSm);background:var(--surface2);border:1px solid var(--border)}.stat strong{display:block;font-family:var(--display);font-size:28px;color:var(--accent)}.stat span{color:var(--muted);font-size:14px}.shell{display:grid;grid-template-columns:290px 1fr;gap:22px;margin-top:22px}.sidebar{padding:20px;position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto}.sidebar h2{font-size:28px;margin:0 0 6px}.sidebar p{font-size:13px;color:var(--muted);margin:0 0 14px}.nav{display:grid;gap:7px}.navBtn{width:100%;text-align:left;padding:10px 12px;border-radius:13px;background:transparent}.navBtn span{display:block;color:var(--faint);font:600 10px var(--mono);text-transform:uppercase;letter-spacing:.08em}.navBtn strong{display:block;font-size:14px}.navBtn.active{background:var(--primaryTint);border-color:color-mix(in srgb,var(--primary) 34%,transparent)}.content{display:grid;gap:16px}.module{display:none;padding:clamp(22px,3vw,34px)}.module.active{display:block}.kicker{font:600 11px var(--mono);color:var(--primary);letter-spacing:.09em;text-transform:uppercase;margin-bottom:5px}.module h2{font-size:clamp(2.1rem,4vw,3.25rem);margin:0}.intro{margin:9px 0 0;max-width:76ch}.grid2,.grid3{display:grid;gap:14px;margin-top:18px}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.card,.notice,.output,.fieldGroup{padding:17px;border-radius:var(--radiusSm);border:1px solid var(--border);background:var(--surface2)}.card h3{font-size:23px;margin:0 0 8px}.card ul{padding-left:20px;margin:8px 0}.notice{margin-top:16px}.notice strong{color:var(--text)}.notice.warning{background:color-mix(in srgb,var(--warning) 8%,var(--surface));border-color:color-mix(in srgb,var(--warning) 24%,var(--border))}.notice.accent{background:var(--accentTint)}.timeline{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}.timeline:last-child{border-bottom:0}.num{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--primaryTint);color:var(--primary);font:600 11px var(--mono)}.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.compare .card:first-child{background:color-mix(in srgb,var(--success) 9%,var(--surface))}.compare .card:last-child{background:var(--accentTint)}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.span2{grid-column:1/-1}label.field{display:grid;gap:6px;font-size:13px;font-weight:650}input[type=text],input[type=date],input[type=time],select,textarea{width:100%;border:1px solid var(--border);border-radius:11px;background:var(--surface);padding:10px 12px;min-height:44px}textarea{min-height:105px;resize:vertical}.hint{font-size:12px;font-weight:400}.checklist{display:grid;gap:8px}.check{display:flex;gap:10px;align-items:flex-start;padding:11px;border:1px solid var(--border);border-radius:11px;background:var(--surface2);font-size:14px}.check input{margin-top:4px}.output{white-space:pre-wrap;background:var(--offset);min-height:120px;font-family:var(--body);font-size:14px}.builderActions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.micro{display:grid;gap:10px;margin-top:14px}.micro>div{padding:12px;border-radius:11px;background:var(--offset);border:1px solid var(--border);font-size:14px}.pillRow{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.pill{padding:7px 10px;border-radius:999px;background:var(--offset);border:1px solid var(--border);font-size:12px}.scorebar{height:12px;border-radius:999px;background:var(--offset);overflow:hidden;margin-top:10px}.scorefill{height:100%;width:0;background:linear-gradient(90deg,var(--warning),var(--primary));transition:.2s}.supportCtas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px}.supportCard{padding:22px;border-radius:var(--radius);color:#fff;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-height:210px}.supportCard.community{background:linear-gradient(145deg,#2F6E83,#214f5f)}.supportCard.coaching{background:linear-gradient(145deg,#8B2635,#611b27)}.supportCard .supportKicker{font:700 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:.78}.supportCard h2{font-family:var(--display);font-size:clamp(2rem,4vw,3rem);line-height:1.02;margin:4px 0 10px;color:#fff}.supportCard p{margin:0;color:rgba(255,255,255,.88);max-width:52ch}.supportCard a{align-self:flex-start;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 15px;border-radius:999px;background:#fff;color:#1d1b19;text-decoration:none;font-weight:700;border:1px solid rgba(255,255,255,.55);transition:.18s ease}.supportCard a:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(0,0,0,.14)}.footer{padding:18px 4px 8px;color:var(--muted);font-size:12px;text-align:center}@media(max-width:700px){.supportCtas{grid-template-columns:1fr}}.toast{position:fixed;right:18px;bottom:18px;background:var(--text);color:var(--bg);padding:10px 14px;border-radius:999px;opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;z-index:20}.toast.show{opacity:1;transform:none}.sectionTitle{font-size:19px;font-weight:700;margin:18px 0 8px}.tagSelect{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.tagSelect label{font-size:13px;font-weight:500}.legalTerm{border-left:4px solid var(--accent);padding-left:12px}.skip{position:absolute;left:10px;top:-80px;background:var(--primary);color:#fff;padding:8px 12px;border-radius:999px;z-index:99}.skip:focus{top:10px}.mutedBox{padding:14px;background:var(--offset);border-radius:12px;color:var(--muted);font-size:13px}.printOnly{display:none}@media(max-width:980px){.hero,.shell{grid-template-columns:1fr}.sidebar{position:static;max-height:none}.nav{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.grid2,.grid3,.compare,.formGrid,.tagSelect{grid-template-columns:1fr}.span2{grid-column:auto}.nav{grid-template-columns:1fr}.topbar{align-items:flex-start}.hero h1{font-size:3rem}}@media print{body{background:#fff}.topbar,.sidebar,.actions,.builderActions,.iconBtn{display:none!important}.shell,.hero{display:block}.panel{box-shadow:none;border:0}.module{display:block!important;break-inside:avoid}.printOnly{display:block}.content{display:block}.heroSide{margin-top:18px}.app{max-width:none}}
 </style>
 </head>
 <body>
-<a href="#main" class="skip-link">Skip to content</a>
-<div class="app-shell">
-  <header class="topbar" aria-label="Top bar">
-    <div class="brand-lockup">
-      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0CAMAAAD8CC+4AAABP2lDQ1BpY2MAAHicfZC/SwJxGMY/11WWWA05NBQcJU0FUUtTgYZOEfgj1Kbz/FGgdt33QprLoaloiEZrCaLZxhz6A4KgIQqirdWghpKLrw5aUM/yfnh4Xt6XB5TnvFEQ3RoUirYVDvm1eCKpuV5Q8dLPIGO6IczlSDAKIPSSMGwrzw+936PIeTe9rhfTO6/Xq8kFpbo7UY4FP1Yu+F/udEYYwBfgM0zLBkUDxku2KXkJ8BrrehqUODBlxRNJUPakn2vxieRUiy8lW9FwAJQaoOU6ONXBhfy2vCslv/dkirEI0AeMIggTwv9HpreZCRBgBmRfv3sQ2bnZ1pZnEXqeHOdtElyH0DhynM9Tx2mcgfoIta32/mYF5uugHrS91DFc7cPIQ9vzVWCoDNUbU7f0pqUCXdkNqJ/DQAKGb8G99g3j4l+xfPB+eQAAAutQTFRFTGlx////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VNr3kgAAAPh0Uk5TAGSzePwx6z42bLtQqSjh8oBDAnCL9w7+I/ZU+wgG6IcJ8fqSjwSe+f3Cvtnl0wzOp+/StxMgsBfdYCvq3yVMOsSrKhX0k0sz3CwbO5US9UE8JKrLKXTQIhrpD+estbx1EZFAhajVHR5KC6RoR+0uZhzYiMxlYk/WUex67qXmf0RJ4yZxFr3FMhm/lM8vW+LwgjnGMEVCWfg1gT2fwINdlnt8RrJuc7SdXk5YX8qioK5vDSEQyY2vzeDHmFVXU7l2psNWmVw45NS2YYzzLdt5oYYKrZx+mmqx0cHXuDSQa4Q3aZt9Wto/3gUUY20fZ7p3ikijUo5NiXKq3PLNAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAE/nRFWHRYTUw6Y29tLmFkb2JlLnhtcAA8P3hwYWNrZXQgYmVnaW49J++7vycgaWQ9J1c1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCc/Pgo8eDp4bXBtZXRhIHhtbG5zOng9J2Fkb2JlOm5zOm1ldGEvJz4KPHJkZjpSREYgeG1sbnM6cmRmPSdodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjJz4KCiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0nJwogIHhtbG5zOkF0dHJpYj0naHR0cDovL25zLmF0dHJpYnV0aW9uLmNvbS9hZHMvMS4wLyc+CiAgPEF0dHJpYjpBZHM+CiAgIDxyZGY6U2VxPgogICAgPHJkZjpsaSByZGY6cGFyc2VUeXBlPSdSZXNvdXJjZSc+CiAgICAgPEF0dHJpYjpDcmVhdGVkPjIwMjUtMTItMDc8L0F0dHJpYjpDcmVhdGVkPgogICAgIDxBdHRyaWI6RXh0SWQ+YTg0MTNiOWItNDZlMy00OWMxLTk0ZTQtMTRmZTE0MmY4MGQ1PC9BdHRyaWI6RXh0SWQ+CiAgICAgPEF0dHJpYjpGYklkPjUyNTI2NTkxNDE3OTU4MDwvQXR0cmliOkZiSWQ+CiAgICAgPEF0dHJpYjpUb3VjaFR5cGU+MjwvQXR0cmliOlRvdWNoVHlwZT4KICAgIDwvcmRmOmxpPgogICA8L3JkZjpTZXE+CiAgPC9BdHRyaWI6QWRzPgogPC9yZGY6RGVzY3JpcHRpb24+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpkYz0naHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8nPgogIDxkYzp0aXRsZT4KICAgPHJkZjpBbHQ+CiAgICA8cmRmOmxpIHhtbDpsYW5nPSd4LWRlZmF1bHQnPkZlYXJsZXNzIFdvcmtwbGFjZSAtICBUZWFsIGFuZCByZWQgKDMpPC9yZGY6bGk+CiAgIDwvcmRmOkFsdD4KICA8L2RjOnRpdGxlPgogPC9yZGY6RGVzY3JpcHRpb24+CgogPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9JycKICB4bWxuczpwZGY9J2h0dHA6Ly9ucy5hZG9iZS5jb20vcGRmLzEuMy8nPgogIDxwZGY6QXV0aG9yPktlbGx5IEplbmtpbnMgR0Jlcmc8L3BkZjpBdXRob3I+CiA8L3JkZjpEZXNjcmlwdGlvbj4KCiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0nJwogIHhtbG5zOnhtcD0naHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyc+CiAgPHhtcDpDcmVhdG9yVG9vbD5DYW52YSAoUmVuZGVyZXIpIGRvYz1EQUc2MVZ0dzZqQSB1c2VyPVVBRHBBNVhrb1hjIGJyYW5kPUJBRHBBeUJpUnZJIHRlbXBsYXRlPUJsdWUgRGFyayBNaW5pbWFsaXN0IElubm92YXRvciBTdWNjZXNmdWwgbG9nbzwveG1wOkNyZWF0b3JUb29sPgogPC9yZGY6RGVzY3JpcHRpb24+CjwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9J3InPz4UNzsmAAAAtGVY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" alt="Fearless Workplace" style="height:48px;">
-      <div class="brand-text">
-        <small>Fearless Workplace</small>
-        <strong>How to document your work, protect yourself, and keep proof that matters</strong>
-      </div>
+<a class="skip" href="#main">Skip to content</a>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="logo" aria-hidden="true"></div><div><small>Fearless Workplace</small><strong>Documentation Toolkit</strong></div></div>
+  <button class="iconBtn" id="themeBtn" aria-label="Switch theme">◐</button>
+</header>
+<main id="main">
+<section class="hero">
+  <div class="panel heroCopy">
+    <span class="eyebrow">Standalone guide + working tool</span>
+    <h1>Build the record before you need the record.</h1>
+    <p>This toolkit helps you preserve facts, approvals, changes, patterns, and proof in a form another person can understand later. Use the guide to build the system, then use the builders to create incident records, connect patterns, and prepare a concise summary when you need to raise a concern.</p>
+    <div class="actions"><button class="btn" data-jump="builder">Create an incident record</button><button class="ghost" data-jump="overview">Start with the guide</button></div>
+  </div>
+  <aside class="panel heroSide" aria-label="Toolkit overview">
+    <div class="stat"><strong>3 files</strong><span>Evidence, CYA, and wins give you a fuller record.</span></div>
+    <div class="stat"><strong>1 entry system</strong><span>Facts → proof → work impact → response → pattern.</span></div>
+    <div class="stat"><strong>2 builders</strong><span>Create a clean incident record and a concise escalation summary.</span></div>
+    <div class="stat"><strong>Private by design</strong><span>This page does not send your entries anywhere. Copy or save what you create in a system you control.</span></div>
+  </aside>
+</section>
+
+<section class="shell">
+<aside class="panel sidebar" aria-label="Section navigation">
+  <h2>Guide map</h2><p>Work through it in order or jump to the part you need.</p>
+  <nav class="nav">
+    <button class="navBtn active" data-module="overview"><span>Start here</span><strong>Overview</strong></button>
+    <button class="navBtn" data-module="document"><span>Decide</span><strong>What to document</strong></button>
+    <button class="navBtn" data-module="why"><span>Purpose</span><strong>Why keep records</strong></button>
+    <button class="navBtn" data-module="files"><span>System</span><strong>Evidence, CYA, wins</strong></button>
+    <button class="navBtn" data-module="capture"><span>In the moment</span><strong>Quick capture</strong></button>
+    <button class="navBtn" data-module="digital"><span>Digital proof</span><strong>Email, chat, screenshots</strong></button>
+    <button class="navBtn" data-module="method"><span>Writing</span><strong>Write the entry</strong></button>
+    <button class="navBtn" data-module="language"><span>Precision</span><strong>Professional language</strong></button>
+    <button class="navBtn" data-module="example"><span>Practice</span><strong>Before + after example</strong></button>
+    <button class="navBtn" data-module="builder"><span>Tool</span><strong>Incident record builder</strong></button>
+    <button class="navBtn" data-module="patterns"><span>Pattern</span><strong>Connect the incidents</strong></button>
+    <button class="navBtn" data-module="summary"><span>Escalation</span><strong>Summary builder</strong></button>
+    <button class="navBtn" data-module="quality"><span>Quality</span><strong>Entry strength score</strong></button>
+    <button class="navBtn" data-module="caution"><span>Before you save</span><strong>Records + legal caution</strong></button>
+  </nav>
+</aside>
+<div class="content">
+
+<section class="panel module active" id="module-overview">
+  <div class="kicker">Start here</div><h2>What this toolkit gives you</h2>
+  <p class="intro">Documentation becomes useful when it does three jobs at once: it preserves what happened, shows how you handled your work, and protects the proof of your contribution. The goal is a record that stays readable even months later.</p>
+  <div class="grid3">
+    <article class="card"><h3>Protection</h3><p>Keep a timeline when conversations get rewritten, responsibility shifts, access changes, or your work starts being described differently.</p></article>
+    <article class="card"><h3>Clarity</h3><p>Separate one upsetting event from a repeating pattern. Dates and specifics make changes easier to see.</p></article>
+    <article class="card"><h3>Career record</h3><p>Preserve praise, outcomes, approvals, and contributions for reviews, interviews, résumé updates, and future references.</p></article>
+  </div>
+  <div class="notice"><strong>Core rule:</strong><p>Write for the future reader. Assume they were not there. Give them enough detail to understand what occurred, what proof exists, how the work was affected, and what you did next.</p></div>
+</section>
+
+<section class="panel module" id="module-document">
+  <div class="kicker">Decide what belongs</div><h2>What is worth documenting?</h2>
+  <p class="intro">You do not need a running diary of every irritating interaction. Prioritize events that change the work, the record, your access, your responsibilities, your reputation, or the way you are being managed.</p>
+  <div class="grid3">
+    <article class="card"><h3>Changes to the work</h3><ul><li>Deadlines or scope changed after agreement</li><li>Instructions conflict with earlier direction</li><li>Work is reassigned or removed</li><li>Necessary access or information is withheld</li><li>Expectations suddenly change</li></ul></article>
+    <article class="card"><h3>Changes to how you are treated</h3><ul><li>New or unusual monitoring</li><li>Exclusion from information needed for your role</li><li>Public undermining or misrepresentation</li><li>Sudden criticism with unclear standards</li><li>Pressure after you raised a concern or set a boundary</li></ul></article>
+    <article class="card"><h3>Events with a paper trail</h3><ul><li>Accusations or complaints</li><li>Warnings or performance concerns</li><li>Approvals and decisions</li><li>Meetings where responsibility is assigned</li><li>Praise, outcomes, and completed work</li></ul></article>
+  </div>
+  <div class="notice warning"><strong>Use significance, not volume.</strong><p>A short log of specific, consequential events is easier to use than hundreds of entries about minor frustrations.</p></div>
+</section>
+
+<section class="panel module" id="module-why">
+  <div class="kicker">Purpose</div><h2>Why keep records before the situation gets bad</h2>
+  <p class="intro">Memory gets weaker under pressure, and workplace stories can change quickly. A contemporaneous record gives you dates, details, and source material before you are trying to reconstruct months of events at once.</p>
+  <div class="grid2">
+    <article class="card"><h3>For protection</h3><ul><li>Preserve instructions and approvals</li><li>Track when expectations change</li><li>Keep the sequence of events straight</li><li>Show the steps you took to clarify or solve the issue</li></ul></article>
+    <article class="card"><h3>For your future</h3><ul><li>Capture praise before it disappears in old messages</li><li>Keep measurable project outcomes</li><li>Track problems you solved</li><li>Save evidence of leadership and invisible labor</li></ul></article>
+  </div>
+</section>
+
+<section class="panel module" id="module-files">
+  <div class="kicker">The system</div><h2>The three documentation files</h2><p class="intro">Keep these as separate categories even if you store them in one spreadsheet or folder.</p>
+  <div class="grid3">
+    <article class="card"><h3>Evidence file</h3><ul><li>Incidents and dates</li><li>Exact words when relevant</li><li>Witnesses</li><li>Screenshots and messages</li><li>Pattern links</li></ul></article>
+    <article class="card"><h3>CYA file</h3><ul><li>Instructions and approvals</li><li>Scope and deadline changes</li><li>Recap emails</li><li>Submitted work and timestamps</li><li>Proof you followed direction</li></ul></article>
+    <article class="card"><h3>Wins file</h3><ul><li>Praise and appreciation</li><li>Results and metrics</li><li>Problems solved</li><li>Leadership and extra contribution</li><li>Evidence of credibility</li></ul></article>
+  </div>
+  <div class="notice"><strong>Why all three?</strong><p>Your evidence file shows what happened. Your CYA file shows how you handled the work. Your wins file preserves the performance record someone may later minimize or overlook.</p></div>
+</section>
+
+<section class="panel module" id="module-capture">
+  <div class="kicker">In the moment</div><h2>How to document when you are not at a computer</h2><p class="intro">Use a fast capture system during the day, then expand the entry when you have time. This works in healthcare, education, retail, trades, field work, and other settings where you cannot stop and write a full account.</p>
+  <div class="timeline"><div class="num">01</div><div><strong>Capture the anchors.</strong><p>Date, approximate time, location/platform, people present.</p></div></div>
+  <div class="timeline"><div class="num">02</div><div><strong>Write the observable event.</strong><p>One or two sentences describing what was said or done.</p></div></div>
+  <div class="timeline"><div class="num">03</div><div><strong>Mark the proof.</strong><p>Screenshot, email, witness, schedule, file, meeting invite, or other record to locate later.</p></div></div>
+  <div class="timeline"><div class="num">04</div><div><strong>Expand later.</strong><p>Add work impact, your response, and any related earlier incident.</p></div></div>
+  <div class="micro"><div><strong>Fast template:</strong> Date. Time. Place. People. What happened. Work impact. Proof.</div><div><strong>Useful habit:</strong> Create the fuller entry the same day when possible, while details are fresh.</div></div>
+</section>
+
+<section class="panel module" id="module-digital">
+  <div class="kicker">Digital proof</div><h2>Email, chat, screenshots, and records</h2><p class="intro">Digital evidence is strongest when the source, date, participants, and surrounding context are easy to identify.</p>
+  <div class="grid2">
+    <article class="card"><h3>Email</h3><ul><li>Preserve the relevant thread and date</li><li>Keep sender and recipients visible</li><li>Save approvals, deadlines, and changes in direction</li><li>Use written recaps when a verbal decision needs a record</li></ul></article>
+    <article class="card"><h3>Slack, Teams, text, or chat</h3><ul><li>Keep names and timestamps visible</li><li>Preserve enough context to understand the exchange</li><li>Record the channel or thread</li><li>Note if messages can be edited or deleted</li></ul></article>
+  </div>
+  <div class="notice"><strong>Evidence completeness check</strong><div class="pillRow"><span class="pill">Date/time</span><span class="pill">Participants</span><span class="pill">Source/platform</span><span class="pill">Relevant context</span><span class="pill">Original file when appropriate</span><span class="pill">Witnesses</span></div></div>
+</section>
+
+<section class="panel module" id="module-method">
+  <div class="kicker">Writing</div><h2>How to write a strong entry</h2><p class="intro">Use the same sequence every time. Consistency makes the record easier to review and compare.</p>
+  <div class="timeline"><div class="num">01</div><div><strong>State the facts.</strong><p>Who, what, when, and where. Use exact wording when it is important and you can reliably record it.</p></div></div>
+  <div class="timeline"><div class="num">02</div><div><strong>Preserve the proof.</strong><p>Reference the message, screenshot, document, witness, meeting invite, or other supporting record.</p></div></div>
+  <div class="timeline"><div class="num">03</div><div><strong>Name the work impact.</strong><p>Explain what changed: delay, access, responsibility, workload, communication, reputation, or ability to complete the work.</p></div></div>
+  <div class="timeline"><div class="num">04</div><div><strong>Record your response.</strong><p>Clarification requested, recap sent, work completed, concern raised, proof saved, or another step you took.</p></div></div>
+  <div class="timeline"><div class="num">05</div><div><strong>Connect the pattern.</strong><p>If relevant, identify a previous entry with the same behavior, trigger, person, or consequence.</p></div></div>
+  <div class="compare"><article class="card"><h3>More useful</h3><ul><li>“At 3:10 p.m., the deadline changed from Friday to Wednesday during the project call.”</li><li>“I was removed from the client update distribution list on September 8 and missed the revised requirements.”</li><li>“I sent a written recap at 4:02 p.m. and saved the reply approving the change.”</li></ul></article><article class="card"><h3>Harder to use</h3><ul><li>“He is trying to sabotage me.”</li><li>“She is toxic.”</li><li>“They always do this.”</li></ul></article></div>
+</section>
+
+<section class="panel module" id="module-language">
+  <div class="kicker">Precision</div><h2>Use behavior language before legal labels</h2><p class="intro">Specific descriptions give the reader something concrete to evaluate. Terms such as discrimination, retaliation, harassment, and hostile work environment can carry legal definitions. Use them carefully and avoid treating the label itself as proof.</p>
+  <div class="grid2">
+    <article class="card"><h3>Describe the behavior</h3><ul><li>Excluded from information required for the role</li><li>Standards applied inconsistently</li><li>Work reassigned without explanation</li><li>Increased monitoring after a specific event</li><li>Public statements that misstate responsibility</li><li>Repeated deadline changes with little notice</li></ul></article>
+    <article class="card"><h3>Describe the consequence</h3><ul><li>Unable to complete the task by the stated deadline</li><li>Lost access to information needed for the assignment</li><li>Responsibility for the delay was attributed to me</li><li>Required additional work to correct the record</li><li>Excluded from a decision affecting my responsibilities</li></ul></article>
+  </div>
+  <div class="notice accent legalTerm"><strong>Useful sentence starters</strong><p>“On [date], [person] stated/did…”<br>“This affected the work by…”<br>“The supporting record is…”<br>“I responded by…”<br>“This appears related to the entry dated…”<br>“Since [event], I have documented the following change…”</p></div>
+</section>
+
+<section class="panel module" id="module-example">
+  <div class="kicker">Worked example</div><h2>Translate the story into a usable record</h2><p class="intro">The goal is to keep the seriousness while removing conclusions the record cannot prove on its own.</p>
+  <div class="compare">
+    <article class="card"><h3>First-draft account</h3><p>“My manager is trying to make me look incompetent. She keeps leaving me out of things and then blaming me when I do not know what changed. Everyone can see what she is doing.”</p></article>
+    <article class="card"><h3>Documented version</h3><p>“On September 8, I was not included on the message containing revised requirements for Project A. On September 9 at 10:20 a.m., my manager asked why my draft did not include those requirements. I stated that I had not received them. The revision message shows the recipients and does not include me. This delayed completion by approximately three hours while I updated the draft. A similar omission occurred on September 2; see Entry 09-02.”</p></article>
+  </div>
+  <div class="notice"><strong>What changed?</strong><p>The second version identifies the event, source, work impact, response, and earlier related incident. The reader can evaluate the pattern without being asked to accept a conclusion first.</p></div>
+</section>
+
+<section class="panel module" id="module-builder">
+  <div class="kicker">Interactive tool</div><h2>Incident record builder</h2><p class="intro">Complete the fields below. The builder turns them into a clean entry you can copy into your own spreadsheet, notes file, or document.</p>
+  <div class="formGrid" style="margin-top:18px">
+    <label class="field">Date<input type="date" id="incDate"></label>
+    <label class="field">Time<input type="time" id="incTime"></label>
+    <label class="field">Location or platform<input type="text" id="incPlace" placeholder="Team call, worksite, Teams, email"></label>
+    <label class="field">People involved<input type="text" id="incPeople" placeholder="Names or roles"></label>
+    <label class="field span2">What happened?<textarea id="incFacts" placeholder="Describe what was said or done. Keep it observable and specific."></textarea><span class="hint">Include exact words only when they are relevant and you can record them reliably.</span></label>
+    <label class="field">Work impact<textarea id="incImpact" placeholder="What changed in access, timing, workload, responsibility, communication, or reputation?"></textarea></label>
+    <label class="field">Your response<textarea id="incResponse" placeholder="What did you do next?"></textarea></label>
+    <label class="field">Evidence<textarea id="incEvidence" placeholder="Email, screenshot, file, calendar invite, witness, chat, schedule…"></textarea></label>
+    <label class="field">Witnesses<textarea id="incWitness" placeholder="Who else observed or received the information?"></textarea></label>
+    <label class="field">Related earlier incident<input type="text" id="incRelated" placeholder="Example: Entry 09-02 or Sept. 2 meeting"></label>
+    <label class="field">Pattern tag<select id="incTag"><option value="">Choose one if useful</option><option>Information withholding</option><option>Exclusion</option><option>Changing expectations</option><option>Inconsistent standards</option><option>Undermining / misrepresentation</option><option>Unusual monitoring / scrutiny</option><option>Work reassignment / removal</option><option>Pressure after concern or boundary</option><option>Other</option></select></label>
+    <label class="field span2">Private notes — keep separate from any formal record<textarea id="incPrivate" placeholder="Your interpretation, questions, emotional reaction, or things you want to discuss with a trusted support person."></textarea><span class="hint">This is intentionally excluded from the generated incident record.</span></label>
+  </div>
+  <div class="builderActions"><button class="btn" id="buildIncident">Build record</button><button class="ghost" id="copyIncident">Copy record</button><button class="ghost" id="clearIncident">Clear fields</button></div>
+  <div class="sectionTitle">Generated record</div><div class="output" id="incidentOutput">Your formatted incident record will appear here.</div>
+</section>
+
+<section class="panel module" id="module-patterns">
+  <div class="kicker">Connect the incidents</div><h2>Pattern tracker</h2><p class="intro">A pattern is more useful when you can describe what repeats and how it changes over time. Review your entries periodically and answer these questions.</p>
+  <div class="grid2">
+    <article class="card"><h3>What repeats?</h3><ul><li>Same person or group</li><li>Same type of behavior</li><li>Same trigger</li><li>Same consequence</li><li>Same gap between what was said and what happened</li></ul></article>
+    <article class="card"><h3>What changed?</h3><ul><li>Frequency increased</li><li>Behavior spread to more people</li><li>Scrutiny increased</li><li>Access or responsibilities decreased</li><li>Consequences became more serious</li></ul></article>
+  </div>
+  <div class="formGrid" style="margin-top:18px">
+    <label class="field">Pattern you are seeing<textarea id="patRepeat" placeholder="Example: I am repeatedly excluded from changes that affect my assigned work."></textarea></label>
+    <label class="field">When it tends to happen<textarea id="patTrigger" placeholder="After asking for clarification, after raising an issue, before deadlines…"></textarea></label>
+    <label class="field">Entries that support it<textarea id="patEntries" placeholder="List dates or entry IDs."></textarea></label>
+    <label class="field">How it affects the work<textarea id="patImpact" placeholder="Describe the recurring operational effect."></textarea></label>
+    <label class="field span2">What has changed over time?<textarea id="patChange" placeholder="Frequency, severity, people involved, access, opportunities, monitoring, criticism…"></textarea></label>
+  </div>
+  <div class="builderActions"><button class="btn" id="buildPattern">Build pattern note</button><button class="ghost" id="copyPattern">Copy note</button></div>
+  <div class="sectionTitle">Pattern note</div><div class="output" id="patternOutput">Your pattern note will appear here.</div>
+</section>
+
+<section class="panel module" id="module-summary">
+  <div class="kicker">Escalation</div><h2>Turn many entries into one readable summary</h2><p class="intro">When you need to raise a concern, do not dump a raw log on the reader and expect them to find the pattern. Give them the pattern, strongest examples, work impact, prior steps, available evidence, and the outcome you are requesting.</p>
+  <div class="formGrid" style="margin-top:18px">
+    <label class="field span2">Core concern<textarea id="sumConcern" placeholder="One or two sentences describing the pattern in behavior terms."></textarea></label>
+    <label class="field">Strongest examples<textarea id="sumExamples" placeholder="List 2–4 dates and concise examples."></textarea></label>
+    <label class="field">Work impact<textarea id="sumImpact" placeholder="Operational, access, workload, responsibility, communication, reputation…"></textarea></label>
+    <label class="field">Steps already taken<textarea id="sumSteps" placeholder="Clarified, recapped, raised concern, requested expectations, etc."></textarea></label>
+    <label class="field">Evidence available<textarea id="sumEvidence" placeholder="Messages, emails, documents, witnesses, calendar records…"></textarea></label>
+    <label class="field span2">Requested outcome<textarea id="sumRequest" placeholder="What are you asking the recipient to do or clarify?"></textarea></label>
+  </div>
+  <div class="builderActions"><button class="btn" id="buildSummary">Build summary</button><button class="ghost" id="copySummary">Copy summary</button></div>
+  <div class="sectionTitle">Generated summary</div><div class="output" id="summaryOutput">Your concise summary will appear here.</div>
+  <div class="notice warning"><strong>Keep the claim proportional to the evidence.</strong><p>Describe what your records show. If you use a legal term, be sure you are using it accurately rather than as a synonym for a difficult or unfair workplace experience.</p></div>
+</section>
+
+<section class="panel module" id="module-quality">
+  <div class="kicker">Quality check</div><h2>Entry strength score</h2><p class="intro">Run this check before you consider an entry complete.</p>
+  <div class="checklist" id="qualityChecklist" style="margin-top:18px">
+    <label class="check"><input type="checkbox"><span><strong>Dated and anchored.</strong><br>Date, time if relevant, and location/platform are identifiable.</span></label>
+    <label class="check"><input type="checkbox"><span><strong>Observable.</strong><br>The entry says what occurred instead of relying on motive or character judgments.</span></label>
+    <label class="check"><input type="checkbox"><span><strong>Specific people or roles.</strong><br>The reader can tell who was involved.</span></label>
+    <label class="check"><input type="checkbox"><span><strong>Work impact.</strong><br>The entry explains what changed for the work.</span></label>
+    <label class="check"><input type="checkbox"><span><strong>Proof identified.</strong><br>The supporting email, screenshot, file, witness, or other record is named.</span></label>
+    <label class="check"><input type="checkbox"><span><strong>Your response.</strong><br>The record shows what you did next.</span></label>
+    <label class="check"><input type="checkbox"><span><strong>Pattern connection.</strong><br>If this happened before, the earlier entry is linked.</span></label>
+    <label class="check"><input type="checkbox"><span><strong>Readable by a third party.</strong><br>Someone who was not there could follow the sequence without extra explanation.</span></label>
+  </div>
+  <div class="notice"><strong id="scoreText">0/8 complete</strong><div class="scorebar"><div class="scorefill" id="scoreFill"></div></div><p id="scoreMessage">Check each element that is present in the entry.</p></div>
+</section>
+
+<section class="panel module" id="module-caution">
+  <div class="kicker">Before you save</div><h2>Records, confidentiality, and legal language</h2><p class="intro">A strong documentation habit also protects the integrity of the records you keep.</p>
+  <div class="grid2">
+    <article class="card"><h3>Keep control of your record</h3><ul><li>Use a personal system you control when appropriate</li><li>Keep filenames and dates consistent</li><li>Preserve original context where possible</li><li>Back up important records securely</li></ul></article>
+    <article class="card"><h3>Handle protected information carefully</h3><ul><li>Do not casually remove client, patient, student, customer, trade-secret, proprietary, or other protected information</li><li>Record what you need without collecting unrelated confidential material</li><li>Keep private notes separate from a record you may later share</li></ul></article>
+  </div>
+  <div class="notice warning"><strong>Educational resource</strong><p>This toolkit provides general educational information about workplace documentation. It does not provide legal advice and does not create an attorney-client relationship. Legal definitions and rules about evidence, recordings, confidential information, protected activity, discrimination, harassment, retaliation, and workplace records vary by jurisdiction and circumstance.</p></div>
+  <div class="notice"><strong>Final documentation test</strong><p>Can another person tell what happened, when it happened, who was involved, what proof exists, how the work was affected, what you did next, and whether the event connects to a larger pattern? If yes, you have a usable record.</p></div>
+</section>
+
+</div></section>
+<section class="supportCtas" aria-label="More support from Fearless Workplace">
+  <article class="supportCard community">
+    <div>
+      <div class="supportKicker">Keep building your strategy</div>
+      <h2>Learn more about the Fearless Workplace community.</h2>
+      <p>Get practical workplace strategy, tools, discussions, and support for navigating difficult workplace dynamics.</p>
     </div>
-    <div class="topbar-actions">
-      <button class="icon-btn" type="button" data-theme-toggle aria-label="Switch theme">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      </button>
+    <a href="https://www.skool.com/fearlessworkplace/about" target="_blank" rel="noopener noreferrer">Explore the community →</a>
+  </article>
+  <article class="supportCard coaching">
+    <div>
+      <div class="supportKicker">Need more support?</div>
+      <h2>Get one-on-one help with your workplace situation.</h2>
+      <p>Learn about private coaching if you want focused support thinking through your options, documentation, communication, or next steps.</p>
     </div>
-  </header>
-
-  <main id="main">
-    <section class="hero">
-      <div class="panel hero-copy">
-        <div class="eyebrow">Standalone guide + tool</div>
-        <h1>If you need to document, start here and build the whole system.</h1>
-        <p>This is not just a form. It is a full guide to why documentation matters, what to keep, how to do it when work gets political, how to document when you are away from a computer, and how to build records you can use for protection, reviews, interviews, and credibility.</p>
-        <div class="hero-actions">
-          <button class="btn" type="button" data-jump="why">Why document</button>
-        </div>
-        <div class="notice" style="margin-top: var(--space-5);">
-          <strong>Get the spreadsheet template</strong>
-          <p>Use the spreadsheet if you want a trackable working file you can keep for yourself outside the web page.</p>
-          <div class="utility-row" style="margin-top: var(--space-3);">
-            <a class="btn" href="https://docs.google.com/spreadsheets/d/1bk99-jcKWKtmsgHDsbcyn43D8GaXsuA8/copy" target="_blank" rel="noopener noreferrer">Open template and make a copy</a>
-          </div>
-        </div>
-      </div>
-      <aside class="panel hero-side" aria-label="Overview metrics">
-        <div class="stat-card"><strong>3</strong><span>Core files: evidence, CYA, and wins</span></div>
-        <div class="stat-card"><strong>7</strong><span>Guide sections that take you from zero through the full workflow</span></div>
-        <div class="stat-card"><strong>1</strong><span>Portable process you can use on paper, in notes, by screenshot, or in a spreadsheet</span></div>
-      </aside>
-    </section>
-
-    <section class="section-shell">
-      <aside class="panel sidebar" aria-label="Section navigation">
-        <h2>Guide map</h2>
-        <p>Use this as a standalone resource you can hand someone when they need the whole backstory and the practical steps.</p>
-        <nav class="nav-stack">
-          <button class="nav-chip active" type="button" data-module="overview"><span>Start here</span><strong>Overview</strong></button>
-          <button class="nav-chip" type="button" data-module="why"><span>Why it matters</span><strong>Why you document</strong></button>
-          <button class="nav-chip" type="button" data-module="files"><span>Three parts</span><strong>Evidence, CYA, wins</strong></button>
-          <button class="nav-chip" type="button" data-module="capture"><span>In the moment</span><strong>When you are not at a computer</strong></button>
-          <button class="nav-chip" type="button" data-module="digital"><span>Digital proof</span><strong>Email, Slack, screenshots</strong></button>
-          <button class="nav-chip" type="button" data-module="method"><span>Writing</span><strong>How to write the entry</strong></button>
-          <button class="nav-chip" type="button" data-module="quality"><span>Quality check</span><strong>Entry strength score</strong></button>
-        </nav>
-      </aside>
-
-      <div class="content-stack">
-        <section class="panel module active" id="module-overview">
-          <div class="module-header">
-            <div>
-              <div class="module-kicker">Overview</div>
-              <h2>What this guide gives you</h2>
-              <p class="module-intro">If someone says, “You need to document,” this is the handoff. It explains why documentation matters, what kinds of records to keep, how to capture facts when you are busy or mobile, how to preserve digital proof, and how to turn all of that into evidence, CYA protection, and a wins file you can use later.</p>
-            </div>
-            <div class="module-tools">
-            </div>
-          </div>
-          <div class="grid-3">
-            <article class="card"><h3>Protection</h3><p>Documentation protects you when someone rewrites conversations, shifts blame, excludes you, or starts creating confusion around your work.</p></article>
-            <article class="card"><h3>Preparation</h3><p>Documentation also prepares you for annual reviews, promotion cases, interviews, résumé updates, and future references.</p></article>
-            <article class="card"><h3>Clarity</h3><p>Documentation gives you a timeline so you can stop guessing and start seeing the pattern.</p></article>
-          </div>
-          <div class="notice" style="margin-top: var(--space-4);">
-            <strong>Core rule</strong>
-            <p>Document more than you think you need. Save the wins, the proof, the approvals, the recap emails, the screenshots, and the moments where the story starts changing.</p>
-          </div>
-        </section>
-
-        <section class="panel module" id="module-why">
-          <div class="module-header">
-            <div>
-              <div class="module-kicker">Why it matters</div>
-              <h2>Why you document in the first place</h2>
-              <p class="module-intro">People often start documenting only after the situation gets bad. A stronger approach is to keep records before you need them, because you are building proof, memory, and protection all at once.</p>
-            </div>
-          </div>
-          <div class="grid-2">
-            <article class="card">
-              <h3>Document for protection</h3>
-              <ul>
-                <li>When someone tries to sabotage your work or reputation.</li>
-                <li>When conversations get retold in ways that leave out what happened.</li>
-                <li>When deadlines, expectations, or responsibilities shift.</li>
-                <li>When you speak up and treatment changes afterward.</li>
-              </ul>
-            </article>
-            <article class="card">
-              <h3>Document for your future</h3>
-              <ul>
-                <li>For annual reviews and self-evaluations.</li>
-                <li>For interviews and résumé bullets.</li>
-                <li>For promotion cases and professional credibility.</li>
-                <li>For your own memory when months have passed.</li>
-              </ul>
-            </article>
-          </div>
-          <div class="callout-row">
-            <div class="notice">
-              <strong>If you are waiting for a crisis, you are late.</strong>
-              <p>The best documentation habit starts before the conflict. Save proof while work is normal so your record is already strong if something changes later.</p>
-            </div>
-            <div class="notice">
-              <strong>Document everything that matters.</strong>
-              <p>You do not need to write a novel about every day. You do need to preserve anything that affects your work, your reputation, your contribution, or your paper trail.</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="panel module" id="module-files">
-          <div class="module-header">
-            <div>
-              <div class="module-kicker">Three parts</div>
-              <h2>The three documentation files</h2>
-              <p class="module-intro">Treat documentation as three connected files. Together they create a record that is fuller and harder to distort.</p>
-            </div>
-          </div>
-          <div class="grid-3">
-            <article class="card"><h3>Evidence file</h3><ul><li>Incidents and patterns</li><li>Exact words when possible</li><li>Witnesses</li><li>Screenshots and chats</li><li>Timeline of what happened</li></ul></article>
-            <article class="card"><h3>CYA file</h3><ul><li>Instructions and approvals</li><li>Scope changes and deadlines</li><li>Recap emails</li><li>Submitted work and timestamps</li><li>Proof that you followed through</li></ul></article>
-            <article class="card"><h3>Wins file</h3><ul><li>Praise and appreciation</li><li>Project outcomes and metrics</li><li>Problems solved</li><li>Leadership and invisible labor</li><li>Proof of your credibility</li></ul></article>
-          </div>
-          <div class="notice" style="margin-top: var(--space-4);">
-            <strong>What a CYA file actually is</strong>
-            <p>CYA stands for "cover your ass." It is a record of what you were told to do, by whom, and when, so a verbal instruction cannot later be denied or rewritten. When someone says "let's keep this verbal" or gives you a task with no paper trail, that often leaves no record connecting them to the decision if it goes wrong.</p>
-          </div>
-          <div class="micro-grid" style="margin-top: var(--space-3);">
-            <div class="micro-card"><strong>When to start one:</strong> Any time you're given an instruction, deadline, or scope change with nothing in writing, especially from someone above you.</div>
-            <div class="micro-card"><strong>The move:</strong> Send a short recap right after, in your own words, to the person who gave the instruction. "Per our conversation today, my understanding is that I should [action], because [reason given]. Let me know if I've misunderstood anything."</div>
-            <div class="micro-card"><strong>What it actually does:</strong> It protects you in disputes and unemployment claims. It does not guarantee it saves your job, that's a different problem this file isn't built to solve.</div>
-          </div>
-          <div class="notice" style="margin-top: var(--space-4);">
-            <strong>How they work together</strong>
-            <p>Your evidence file shows what happened. Your CYA file shows how you handled your work responsibly. Your wins file shows the value and credibility someone may later try to minimize.</p>
-          </div>
-        </section>
-
-        <section class="panel module" id="module-capture">
-          <div class="module-header">
-            <div>
-              <div class="module-kicker">In the moment</div>
-              <h2>How to document when you are not at a computer</h2>
-              <p class="module-intro">Not everyone can send recap emails in real time. Nurses, teachers, frontline staff, and people in fast-moving settings need a field method they can use quickly and organize later.</p>
-            </div>
-          </div>
-          <div class="grid-2">
-            <article class="card">
-              <h3>Use a quick-capture method</h3>
-              <ul>
-                <li>Keep a small notebook, index cards, or a notes app on your phone.</li>
-                <li>Write the date, time, people involved, and one-line fact summary.</li>
-                <li>Add the full details later when you have privacy and time.</li>
-                <li>Use shorthand in the moment if needed, then translate it into a clean entry later.</li>
-              </ul>
-            </article>
-            <article class="card">
-              <h3>What to capture first</h3>
-              <ul>
-                <li>Who was there.</li>
-                <li>What was said or done.</li>
-                <li>What changed because of it.</li>
-                <li>What proof exists or where it may exist.</li>
-              </ul>
-            </article>
-          </div>
-          <div class="micro-grid">
-            <div class="micro-card"><strong>Fast template:</strong> Date. Time. Location. People. One sentence on what happened. One sentence on impact. One note on proof.</div>
-            <div class="micro-card"><strong>Best practice:</strong> Capture the facts close to the event, then turn them into a fuller entry later the same day if possible.</div>
-            <div class="micro-card"><strong>Important:</strong> Keep your personal documentation off your work computer and off employer-controlled systems when possible. Use personal tools you control, while still handling confidential information carefully and lawfully.</div>
-          </div>
-        </section>
-
-        <section class="panel module" id="module-digital">
-          <div class="module-header">
-            <div>
-              <div class="module-kicker">Digital proof</div>
-              <h2>How to document email, Slack, chats, and screenshots</h2>
-              <p class="module-intro">A lot of workplace proof lives in digital fragments. The goal is to preserve the fragments before they disappear, get edited, or become hard to find.</p>
-            </div>
-          </div>
-          <div class="grid-2">
-            <article class="card">
-              <h3>Email</h3>
-              <ul>
-                <li>Save the full thread, not just one message.</li>
-                <li>Keep the date and sender visible.</li>
-                <li>Use recap emails after verbal conversations.</li>
-                <li>Save approvals, deadlines, and changes in direction.</li>
-              </ul>
-            </article>
-            <article class="card">
-              <h3>Slack, Teams, or chat</h3>
-              <ul>
-                <li>Take screenshots with the timestamp and names visible.</li>
-                <li>Copy the text into your own log if screenshots are not practical.</li>
-                <li>Note the channel, thread, and date.</li>
-                <li>Preserve context so the message makes sense later.</li>
-              </ul>
-            </article>
-          </div>
-          <div class="callout-row">
-            <div class="notice">
-              <strong>Screenshot rule</strong>
-              <p>When you screenshot, make sure the date, participants, and relevant message are visible. A screenshot with no context is weaker than a screenshot that shows where and when it happened.</p>
-            </div>
-            <div class="notice">
-              <strong>Chat rule</strong>
-              <p>If a Slack or Teams message matters, do not assume you will remember it later. Save the image, log the summary, and note what file it belongs in.</p>
-            </div>
-          </div>
-          <div class="notice" style="margin-top: var(--space-4);">
-            <strong>Storage rule</strong>
-            <p>Keep your documentation in a place you control. The simplest options are a personal spreadsheet, a secure notes file, a document folder, or a personal system that lets you organize entries, screenshots, and proof together.</p>
-          </div>
-        </section>
-
-        <section class="panel module" id="module-method">
-          <div class="module-header">
-            <div>
-              <div class="module-kicker">Writing</div>
-              <h2>How to write the entry</h2>
-              <p class="module-intro">A strong entry is plain, factual, and useful to a third party. Use the same sequence every time so your record stays readable.</p>
-            </div>
-          </div>
-          <div class="timeline-step"><div class="step-num">01</div><div><strong>State the fact.</strong><p>What happened, who was involved, and when it happened.</p></div></div>
-          <div class="timeline-step"><div class="step-num">02</div><div><strong>Preserve the proof.</strong><p>Note the screenshot, email, chat, file, or witness that supports the entry.</p></div></div>
-          <div class="timeline-step"><div class="step-num">03</div><div><strong>Name the impact.</strong><p>Explain how it affected the work, access, timing, communication, or reputation.</p></div></div>
-          <div class="timeline-step"><div class="step-num">04</div><div><strong>Record the response.</strong><p>State what you did next, such as clarifying, following up, saving proof, or escalating.</p></div></div>
-          <div class="compare" style="margin-top: var(--space-5);">
-            <article class="card"><h3>Stronger language</h3><ul><li>“At 3:10 p.m., the deadline changed from Friday to Wednesday in the project meeting.”</li><li>“The statement was made in front of the team and changed who appeared responsible for the delay.”</li><li>“I sent a follow-up message and saved the chat screenshot.”</li></ul></article>
-            <article class="card"><h3>Weaker language</h3><ul><li>“He is always trying to sabotage me.”</li><li>“She is toxic.”</li><li>“Everyone knows what is happening.”</li></ul></article>
-          </div>
-        </section>
-
-        
-
-        <section class="panel module" id="module-quality">
-          <div class="module-header"><div><div class="module-kicker">Quality check</div><h2>Entry strength score</h2><p class="module-intro">Use this quick check before you save anything.</p></div></div>
-          <div class="checklist" id="qualityChecklist">
-            <label class="check-item"><input type="checkbox" value="1"> <span><strong>It is dated.</strong><br><span>The entry includes a date, and time if relevant.</span></span></label>
-            <label class="check-item"><input type="checkbox" value="1"> <span><strong>It is factual.</strong><br><span>The language describes what happened rather than what you think the person meant.</span></span></label>
-            <label class="check-item"><input type="checkbox" value="1"> <span><strong>It includes work impact.</strong><br><span>The entry explains how the event affected work, timing, access, or reputation.</span></span></label>
-            <label class="check-item"><input type="checkbox" value="1"> <span><strong>It preserves proof.</strong><br><span>The entry references an email, file, screenshot, quote, or other supporting record.</span></span></label>
-            <label class="check-item"><input type="checkbox" value="1"> <span><strong>It records your response.</strong><br><span>The entry shows what you did next.</span></span></label>
-            <label class="check-item"><input type="checkbox" value="1"> <span><strong>It could be understood later.</strong><br><span>A third party could follow the entry without needing extra context from you.</span></span></label>
-          </div>
-          <div class="notice" style="margin-top: var(--space-4);"><strong><span id="scoreText">0/6 complete</span></strong><div class="scorebar"><div class="scorefill" id="scoreFill"></div></div><p id="scoreMessage">Start checking items to see how strong the entry is.</p></div>
-        </section>
-      </div>
-    </section>
-  </main>
-</div>
+    <a href="https://www.fearlessworkplace.com/workwithme" target="_blank" rel="noopener noreferrer">Learn about one-on-one coaching →</a>
+  </article>
+</section>
+<footer class="footer">Fearless Workplace · Documentation Toolkit · Educational use only</footer>
+</main></div>
 <div class="toast" id="toast" aria-live="polite"></div>
 <script>
-(function () {
-  const root = document.documentElement;
-  const themeBtn = document.querySelector('[data-theme-toggle]');
-  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  root.setAttribute('data-theme', theme);
-  function updateThemeIcon() {
-    themeBtn.innerHTML = theme === 'dark'
-      ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>'
-      : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
-    themeBtn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-  }
-  updateThemeIcon();
-  themeBtn.addEventListener('click', function () {
-    theme = theme === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', theme);
-    updateThemeIcon();
-  });
+(()=>{
+  const root=document.documentElement, themeBtn=document.getElementById('themeBtn');
+  let theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  root.dataset.theme=theme;
+  themeBtn.onclick=()=>{theme=theme==='dark'?'light':'dark';root.dataset.theme=theme;};
 
-  const modules = document.querySelectorAll('.module');
-  const navButtons = document.querySelectorAll('.nav-chip');
-  function activateModule(id) {
-    modules.forEach(module => module.classList.toggle('active', module.id === 'module-' + id));
-    navButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.module === id));
-    document.getElementById('module-' + id).scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-  navButtons.forEach(btn => btn.addEventListener('click', () => activateModule(btn.dataset.module)));
-  document.querySelectorAll('[data-jump]').forEach(btn => btn.addEventListener('click', () => activateModule(btn.dataset.jump)));
+  const modules=[...document.querySelectorAll('.module')];
+  const nav=[...document.querySelectorAll('.navBtn')];
+  function activate(id){modules.forEach(m=>m.classList.toggle('active',m.id==='module-'+id));nav.forEach(b=>b.classList.toggle('active',b.dataset.module===id));document.getElementById('module-'+id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+  nav.forEach(b=>b.onclick=()=>activate(b.dataset.module));
+  document.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>activate(b.dataset.jump));
 
-  const checklist = document.getElementById('qualityChecklist');
-  const scoreText = document.getElementById('scoreText');
-  const scoreFill = document.getElementById('scoreFill');
-  const scoreMessage = document.getElementById('scoreMessage');
-  checklist.addEventListener('change', function () {
-    const total = checklist.querySelectorAll('input').length;
-    const checked = checklist.querySelectorAll('input:checked').length;
-    const percent = Math.round((checked / total) * 100);
-    scoreText.textContent = checked + '/' + total + ' complete';
-    scoreFill.style.width = percent + '%';
-    scoreMessage.textContent = checked <= 2 ? 'The entry still needs more structure.' : checked <= 4 ? 'This is usable, though it could be stronger.' : 'This entry is shaping up as a strong record.';
-  });
-  const toast = document.getElementById('toast');
-  let toastTimer;
-  function showToast(message) {
-    toast.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
-  }
+  const toast=document.getElementById('toast');let timer;
+  function say(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove('show'),1700);}
+  function val(id){return document.getElementById(id).value.trim();}
+  function section(label,value){return value?`${label}: ${value}\n`:'';}
+  async function copyFrom(id){const text=document.getElementById(id).textContent.trim();if(!text||text.includes('will appear here')){say('Build it first.');return;}try{await navigator.clipboard.writeText(text);say('Copied.');}catch{say('Copy failed — select the text manually.');}}
+
+  document.getElementById('buildIncident').onclick=()=>{
+    const date=val('incDate'), time=val('incTime'), place=val('incPlace'), people=val('incPeople'), facts=val('incFacts'), impact=val('incImpact'), response=val('incResponse'), evidence=val('incEvidence'), witness=val('incWitness'), related=val('incRelated'), tag=val('incTag');
+    if(!date&&!facts){say('Add a date or the facts first.');return;}
+    let out='INCIDENT RECORD\n\n';
+    out+=section('Date',date)+section('Time',time)+section('Location / platform',place)+section('People involved',people)+section('Pattern tag',tag);
+    out+='\n';out+=section('What happened',facts)+section('Work impact',impact)+section('My response',response)+section('Evidence',evidence)+section('Witnesses',witness)+section('Related earlier incident',related);
+    document.getElementById('incidentOutput').textContent=out.trim();say('Record built.');
+  };
+  document.getElementById('copyIncident').onclick=()=>copyFrom('incidentOutput');
+  document.getElementById('clearIncident').onclick=()=>{['incDate','incTime','incPlace','incPeople','incFacts','incImpact','incResponse','incEvidence','incWitness','incRelated','incPrivate'].forEach(id=>document.getElementById(id).value='');document.getElementById('incTag').value='';document.getElementById('incidentOutput').textContent='Your formatted incident record will appear here.';say('Cleared.');};
+
+  document.getElementById('buildPattern').onclick=()=>{const r=val('patRepeat'),t=val('patTrigger'),e=val('patEntries'),i=val('patImpact'),c=val('patChange');let out='PATTERN NOTE\n\n'+section('Repeated pattern',r)+section('When it tends to happen',t)+section('Supporting entries',e)+section('Recurring work impact',i)+section('Change over time',c);document.getElementById('patternOutput').textContent=out.trim();say('Pattern note built.');};
+  document.getElementById('copyPattern').onclick=()=>copyFrom('patternOutput');
+
+  document.getElementById('buildSummary').onclick=()=>{const c=val('sumConcern'),e=val('sumExamples'),i=val('sumImpact'),s=val('sumSteps'),p=val('sumEvidence'),r=val('sumRequest');let out='CONCERN SUMMARY\n\n'+section('Core concern',c)+section('Strongest documented examples',e)+section('Work impact',i)+section('Steps already taken',s)+section('Evidence available',p)+section('Requested outcome',r);document.getElementById('summaryOutput').textContent=out.trim();say('Summary built.');};
+  document.getElementById('copySummary').onclick=()=>copyFrom('summaryOutput');
+
+  const list=document.getElementById('qualityChecklist'), scoreText=document.getElementById('scoreText'), scoreFill=document.getElementById('scoreFill'), scoreMessage=document.getElementById('scoreMessage');
+  list.onchange=()=>{const all=[...list.querySelectorAll('input')],n=all.filter(x=>x.checked).length,p=Math.round(n/all.length*100);scoreText.textContent=`${n}/${all.length} complete`;scoreFill.style.width=p+'%';scoreMessage.textContent=n<=2?'The entry needs more structure before it will be easy to use later.':n<=5?'The record is usable, but several details could still strengthen it.':n<=7?'This is a strong entry. Check the remaining gap if the information is available.':'This entry is well structured and easy for a third party to follow.';};
 })();
 </script>
 </body>
